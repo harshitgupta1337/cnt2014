@@ -40,7 +40,7 @@ public class Projector
 		entries = new ArrayList<>();
 		attr2intMap = new HashMap<>();
 		int2attrMap = new HashMap<>();
-		file = new FileInputStream(new File("/home/harshit/Desktop/CNT2014/HIV_data.xls"));
+		file = new FileInputStream(new File("/home/harshit/workspace/CNT2014/HIV_data.xls"));
 		workbook = new HSSFWorkbook(file);
 		sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.iterator();
@@ -254,28 +254,78 @@ public class Projector
 		*/
 		return list.subList(0, n);
 	}
-	public void printSubGraph(List<Pair> list) throws IOException
-	{
-		File file = new File("/home/harshit/Desktop/CNT2014/Thresholds/DendrogramInput/dendrogam-top"+list.size()+".txt");
+	public void printDendrogramInputWithThreshold(int threshold) throws IOException{
+		int temp[][] = new int[noOfAttributes][noOfAttributes];
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(projAdjMat[i][j] >= threshold)
+					temp[i][j] = projAdjMat[i][j];
+				else
+					temp[i][j] = 0;
+			}
+		}
+		String filename = "/home/harshit/CNT2014/ThresholdedDendrograms/threshold-"+threshold+".txt";
+		printAttributeDendrogramInputForAdjacencyMatrix(temp, filename);
+		generateDendrogram(filename);
+	}
+	private void generateDendrogram(String filename) throws IOException{
+		Runtime.getRuntime().exec("java -jar /home/harshit/multidendrograms-3.1.1/multidendrograms.jar -direct "+filename+" SIM_TYPE W METHOD CL");
+	}
+	public void printAttributeDendrogramInputForAdjacencyMatrix(int matrix[][], String filename) throws IOException{
+		Map<Integer, Boolean> suitableMap = new HashMap<Integer, Boolean>();
+		for(int i=0;i<noOfAttributes;i++){
+			suitableMap.put(i, false);
+			for(int j=0;j<noOfAttributes;j++){
+				if(matrix[i][j] > 0)
+					suitableMap.put(i, true);
+			}
+		}
+		File file = new File(filename);
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		FileWriter fw = new FileWriter(file.getAbsoluteFile());
 		BufferedWriter bw = new BufferedWriter(fw);
-		for(int i=0;i<list.size();i++)
-		{
+		
+		for(int i = 0;i<noOfAttributes;i++){
+			if(suitableMap.get(i))
+				bw.write(int2attrMap.get(i).replace(' ', '_').replace('\t',	'_').replace(',','_').replace(';', '_').replace('|',  '_')+"\t");
+		}
+		bw.write("\n");
+		for(int i=0;i<noOfAttributes;i++){
+			if(suitableMap.get(i)){
+				for(int j=0;j<noOfAttributes;j++){
+					if(suitableMap.get(j))
+						bw.write(matrix[i][j]+"\t");
+				}
+				bw.write("\n");
+			}
+			
+		}
+		bw.close();
+	}
+	public void printSubGraph(List<Pair> list, String filename) throws IOException
+	{
+		File file = new File("/home/harshit/CNT2014/DendrogramInput/"+filename+".txt");
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		for(int i=0;i<list.size();i++){
 			bw.write(int2attrMap.get(list.get(i).x).replace(' ', '_').replace('\t',	'_').replace(',','_').replace(';', '_').replace('|',  '_')+"\t");
 		}
 		bw.write("\n");
-		for(int i=0;i<list.size();i++)
-		{
-			for(int j=0;j<list.size();j++)
-			{
+		for(int i=0;i<list.size();i++){
+			for(int j=0;j<list.size();j++){
 				bw.write(projAdjMat[list.get(i).x][list.get(j).x]+"\t");
 			}
 			bw.write("\n");
@@ -355,6 +405,28 @@ public class Projector
 				list.add(new Pair(i, attrFreq.get(i)));
 		}
 		return list;
+	}
+	public List<Pair> trimList(List<Pair> list, int top){
+		
+		for(int i=0;i<list.size();i++)
+		{
+			int large = list.get(i).y;
+			int largeIn = i;
+			for(int j=i;j<list.size();j++)
+			{
+				if(list.get(j).y > large)
+				{
+					largeIn = j;
+					large = list.get(j).y;
+				}
+			}
+			Pair temp = new Pair(list.get(i).x, list.get(i).y);
+			list.get(i).x = list.get(largeIn).x;
+			list.get(i).y = list.get(largeIn).y;
+			list.get(largeIn).x = temp.x;
+			list.get(largeIn).y = temp.y;
+		}
+		return list.subList(0, top);
 	}
 	public void printBipartiteNet() throws IOException
 	{
@@ -527,9 +599,16 @@ public class Projector
 	{
 		Projector projector = new Projector();
 		projector.run();
+		for(int i=0;i<=151;i+=5){
+			projector.printDendrogramInputWithThreshold(i);
+		}
 		//projector.printPatientsProjection();
 		//projector.printBipartiteNet();
 		//List<Pair> list = projector.generateDennisList();
+		//for(Pair pair : list){
+		//	System.out.println(pair.x);
+		//}
+		//projector.printSubGraph(projector.trimList(list, 23), "dennis-all");
 		//projector.printCsvForAttributes(list);
 		//projector.printPatientsDendrogram();
 		/*for(int j=0;j<=40;j+=5)
@@ -543,21 +622,7 @@ public class Projector
 		//List<Pair> list = projector.listTop(projector.noOfAttributes);
 		
 		//projector.printTable();
-		
-		List<Pair> list = projector.listTop(20);
-		
-		//projector.printCsvForAttributes();
-//		
-		/*for(int i=0;i<projector.noOfAttributes;i++)
-		{
-			//for(int j=0;j<projector.attrFreq.get(list.get(i).x);j++)
-				System.out.println(projector.int2attrMap.get(list.get(i).x) + " \t " + projector.attrFreq.get(list.get(i).x));
-		}*/
-		
-		for(int i=0;i<projector.pathogens.length;i++)
-		{
-			projector.printTable("septran_prophylaxis", projector.pathogens[i]);
-		}
+				
 		
 	}
 }
