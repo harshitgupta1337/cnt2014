@@ -1,0 +1,21 @@
+import numpy
+>>> import Pycluster
+>>> points = numpy.vstack([numpy.random.multivariate_normal(mean, 
+                                                            0.03 * numpy.diag([1,1]),
+                                                            20) 
+                           for mean in [(1, 1), (2, 4), (3, 2)]])
+>>> labels, error, nfound = Pycluster.kcluster(points, 3)
+>>> labels  # Cluster number for each point
+array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], dtype=int32)
+>>> error   # The within-cluster sum of distances for the solution
+1.7721661785401261
+>>> nfound  # Number of times this solution was found
+
+---------------------------------------------------------------------------------
+
+with open('all.txt') as file:
+...     array2d = [[int(digit) for digit in line.split()] for line in file]
+
+labels, error, nfound = Pycluster.kcluster(array2d, 10, transpose=0, npass=100)

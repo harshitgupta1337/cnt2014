@@ -26,6 +26,7 @@ public class Projector
 	private Map<Integer, String>int2attrMap;
 	private List<Integer> attrFreq;
 	private List<Patient> patients;
+	private Map<Integer, List<Integer>> attrToPatientsMap;
 	private int[][] projAdjMat;
 	private int[][] patientProjAdjMat;
 	private FileInputStream file;
@@ -33,6 +34,7 @@ public class Projector
 	private HSSFSheet sheet;
 	public Projector() throws IOException
 	{
+		attrToPatientsMap = new HashMap<Integer, List<Integer>>();
 		patientProjAdjMat = new int[151][151];
 		patients = new ArrayList<Patient>();
 		projAdjMat = new int[100][100];
@@ -115,6 +117,29 @@ public class Projector
 					}
 				}
 			}
+		}
+		fillAttrToPatientsMap();
+	}
+	private void fillAttrToPatientsMap(){
+		for(int i=0;i<noOfAttributes;i++){
+			attrToPatientsMap.put(i, new ArrayList<Integer>());
+		}
+		for(Entry entry : entries){
+			for(Integer attr : entry.getAttributes()){
+				attrToPatientsMap.get(attr).add(entry.getId());
+			}
+		}
+	}
+	public void printXYforAttrKMeans(){
+		
+		for(int i=0;i<noOfAttributes;i++){
+			for(Entry entry : entries){
+				if(attrToPatientsMap.get(i).contains(entry.getId()))
+					System.out.print("1 ");
+				else
+					System.out.print("0 ");
+			}
+			System.out.println();
 		}
 	}
 	public void plotThreshold(int threshold) throws IOException
@@ -585,6 +610,23 @@ public class Projector
 			i++;
 		}
 	}
+	public void printAttributesInClusters(){
+		int labels[] = {0, 9, 4, 7, 6, 2, 3, 8, 9, 7, 0, 2, 9, 6, 6, 7, 7, 6, 2, 9, 8, 6, 6, 6, 0, 1, 6, 7, 4, 9, 6, 8, 1, 8, 8, 7, 8, 8, 4, 1, 2, 0, 4, 5, 2, 0, 3, 6, 3, 3, 3, 5, 2, 1, 2, 4, 0, 0, 5, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 7, 2, 2, 2, 2, 2, 5, 2, 5, 2, 2, 2, 2, 2};
+		System.out.println(labels.length);
+		Map<Integer, List<String>> clusters = new HashMap<Integer, List<String>>();
+		for(int i=0;i<10;i++)
+			clusters.put(i, new ArrayList<String>());
+		for(int i=0;i<labels.length;i++){
+			clusters.get(labels[i]).add(int2attrMap.get(i));
+		}
+		for(Integer cluster : clusters.keySet()){
+			System.out.println("cluster "+cluster);
+			for(String attr : clusters.get(cluster)){
+				System.out.println(attr);
+			}
+			System.out.println();
+		}
+	}
 	public void printTable(String pathogen1, String pathogen2)
 	{
 		String pathogen1_YES = pathogen1+"-YES";
@@ -595,34 +637,46 @@ public class Projector
 		System.out.println(pathogen2_YES+"," + projAdjMat[attr2intMap.get(pathogen2_YES)][attr2intMap.get(pathogen1_YES)]+","+projAdjMat[attr2intMap.get(pathogen2_YES)][attr2intMap.get(pathogen1_NO)]);
 		System.out.println(pathogen2_NO+"," + projAdjMat[attr2intMap.get(pathogen2_NO)][attr2intMap.get(pathogen1_YES)]+","+projAdjMat[attr2intMap.get(pathogen2_NO)][attr2intMap.get(pathogen1_NO)]);
 	}
+	public void printXYforAttrKMeans(List<Integer> attributes){
+		
+		for(int i=0;i<attributes.size();i++){
+			for(Entry entry : entries){
+				if(attrToPatientsMap.get(i).contains(entry.getId()))
+					System.out.print("1 ");
+				else
+					System.out.print("0 ");
+			}
+			System.out.println();
+		}
+	}
+	public void printKMeansClusters(List<Integer> attributes, int numClusters){
+		int labels[] = {3, 1, 3, 2, 2, 3, 1, 3, 0, 0, 3, 3, 1, 4, 4, 2, 0, 2, 3, 4, 3, 2, 2};
+		Map<Integer, List<String>> clusters = new HashMap<Integer, List<String>>();
+		for(int i=0;i<numClusters;i++)
+			clusters.put(i, new ArrayList<String>());
+		for(int i=0;i<labels.length;i++){
+			clusters.get(labels[i]).add(int2attrMap.get(attributes.get(i)));
+		}
+		for(Integer cluster : clusters.keySet()){
+			System.out.println("cluster "+cluster);
+			for(String attr : clusters.get(cluster)){
+				System.out.println(attr);
+			}
+			System.out.println();
+		}
+	}
 	public static void main(String[] args) throws IOException 
 	{
 		Projector projector = new Projector();
 		projector.run();
-		for(int i=0;i<=151;i+=5){
-			projector.printDendrogramInputWithThreshold(i);
+		//projector.printXYforAttrKMeans();
+		//projector.printAttributesInClusters();
+		List<Pair> dennisList = projector.generateDennisList();
+		List<Integer> dennisAttributes = new ArrayList<Integer>();
+		for(Pair pair : dennisList){
+			dennisAttributes.add(pair.x);
 		}
-		//projector.printPatientsProjection();
-		//projector.printBipartiteNet();
-		//List<Pair> list = projector.generateDennisList();
-		//for(Pair pair : list){
-		//	System.out.println(pair.x);
-		//}
-		//projector.printSubGraph(projector.trimList(list, 23), "dennis-all");
-		//projector.printCsvForAttributes(list);
-		//projector.printPatientsDendrogram();
-		/*for(int j=0;j<=40;j+=5)
-		{
-			List<Pair> list = projector.listTop(j);
-		for(int i=0;i<list.size();i++)
-			System.out.println(list.get(i).y);
-			projector.printSubGraphNet(list);
-		}*/
-		
-		//List<Pair> list = projector.listTop(projector.noOfAttributes);
-		
-		//projector.printTable();
-				
-		
+		projector.printXYforAttrKMeans();
+		//projector.printKMeansClusters(dennisAttributes, 5);
 	}
 }
