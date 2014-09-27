@@ -40,7 +40,7 @@ public class PathogenAnalyzer
 		entries = new ArrayList<>();
 		attr2intMap = new HashMap<>();
 		int2attrMap = new HashMap<>();
-		file = new FileInputStream(new File("/home/harshit/Desktop/CNT2014/pathogens.xls"));
+		file = new FileInputStream(new File("/home/harshit/workspace/CNT2014/pathogens.xls"));
 		workbook = new HSSFWorkbook(file);
 		sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.iterator();

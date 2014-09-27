@@ -144,7 +144,7 @@ public class KMeansResultAnalyzer
 		String line;
 		int attributeId=0;
 		Map<Integer, List<Integer>> clusterToAttrIdsMap = new HashMap<Integer, List<Integer>>();
-		for(int i=0;i<10;i++){
+		for(int i=0;i<5;i++){
 			clusterToAttrIdsMap.put(i, new ArrayList<Integer>());
 		}
 		while ((line = br.readLine()) != null) {
@@ -154,7 +154,7 @@ public class KMeansResultAnalyzer
 				
 				//reset the state of computation to that before the computation began
 				clusterToAttrIdsMap = new HashMap<Integer, List<Integer>>();
-				for(int i=0;i<10;i++){
+				for(int i=0;i<5;i++){
 					clusterToAttrIdsMap.put(i, new ArrayList<Integer>());
 				}
 				System.out.println(attributeId);
