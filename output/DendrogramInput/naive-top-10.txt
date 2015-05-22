@@ -1,0 +1,11 @@
+mrsa_bacteria-NO	tb_medicines-NO	hinfluenzae_type_b-NO	sviridans_bacteria-NO	septran_prophylaxis-YES	hiv_medicines-NO	saureus_bacteria-NO	mother_alive-YES	nose_snot-NO	hinfluenzae-NO	
+0	128	124	123	122	118	115	107	108	105	
+128	0	118	119	118	114	103	106	105	97	
+124	118	0	118	112	108	99	99	101	111	
+123	119	118	0	114	110	99	100	102	100	
+122	118	112	114	0	108	100	99	98	93	
+118	114	108	110	108	0	98	100	91	91	
+115	103	99	99	100	98	0	89	88	82	
+107	106	99	100	99	100	89	0	85	86	
+108	105	101	102	98	91	88	85	0	87	
+105	97	111	100	93	91	82	86	87	0	

@@ -1,0 +1,13 @@
+mrsa_bacteria-NO	hinfluenzae_type_b-NO	sviridans_bacteria-NO	saureus_bacteria-NO	hinfluenzae-NO	spneumo_bacteria-NO	spneumo_bacteria-YES	hinfluenzae-YES	saureus_bacteria-YES	sviridans_bacteria-YES	hinfluenzae_type_b-YES	mrsa_bacteria-YES	
+0	124	123	115	105	103	39	37	27	19	18	0	
+124	0	118	99	111	95	37	21	33	14	0	8	
+123	118	0	99	100	91	41	32	33	0	14	9	
+115	99	99	0	82	87	29	34	0	17	17	1	
+105	111	100	82	0	86	25	0	29	11	0	6	
+103	95	91	87	86	0	0	23	22	18	14	6	
+39	37	41	29	25	0	0	17	13	1	5	3	
+37	21	32	34	0	23	17	0	6	8	19	3	
+27	33	33	0	29	22	13	6	0	2	2	8	
+19	14	0	17	11	18	1	8	2	0	5	0	
+18	0	14	17	0	14	5	19	2	5	0	1	
+0	8	9	1	6	6	3	3	8	0	1	0	

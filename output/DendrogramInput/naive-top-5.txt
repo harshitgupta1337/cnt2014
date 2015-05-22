@@ -1,0 +1,6 @@
+mrsa_bacteria-NO	tb_medicines-NO	hinfluenzae_type_b-NO	sviridans_bacteria-NO	septran_prophylaxis-YES	
+0	128	124	123	122	
+128	0	118	119	118	
+124	118	0	118	112	
+123	119	118	0	114	
+122	118	112	114	0	
