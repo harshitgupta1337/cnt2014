@@ -42,7 +42,7 @@ public class Projector
 		entries = new ArrayList<>();
 		attr2intMap = new HashMap<>();
 		int2attrMap = new HashMap<>();
-		file = new FileInputStream(new File("/home/harshit/workspace/CNT2014/HIV_data.xls"));
+		file = new FileInputStream(new File("HIV_data.xls"));
 		workbook = new HSSFWorkbook(file);
 		sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.iterator();
@@ -393,7 +393,7 @@ public class Projector
 	
 	public void printSubGraphNet(List<Pair> list) throws IOException
 	{
-		File file = new File("/home/harshit/Desktop/CNT2014/TOP_NET_FILES_NEW/top"+list.size()+".net");
+		File file = new File("output/oldNetwork.net");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -669,14 +669,15 @@ public class Projector
 	{
 		Projector projector = new Projector();
 		projector.run();
+		projector.printSubGraphNet(projector.listTop(86));
 		//projector.printXYforAttrKMeans();
 		//projector.printAttributesInClusters();
-		List<Pair> dennisList = projector.generateDennisList();
-		List<Integer> dennisAttributes = new ArrayList<Integer>();
-		for(Pair pair : dennisList){
-			dennisAttributes.add(pair.x);
-		}
-		projector.printXYforAttrKMeans();
-		//projector.printKMeansClusters(dennisAttributes, 5);
+//		List<Pair> dennisList = projector.generateDennisList();
+//		List<Integer> dennisAttributes = new ArrayList<Integer>();
+//		for(Pair pair : dennisList){
+//			dennisAttributes.add(pair.x);
+//		}
+//		projector.printXYforAttrKMeans();
+//		//projector.printKMeansClusters(dennisAttributes, 5);
 	}
 }

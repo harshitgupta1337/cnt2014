@@ -33,6 +33,12 @@ public class Dendrogram {
 	private List<List<Integer>> complementaryGroups;
 	
 	/**
+	 * A list denoting whether a complementary group pertains to a social parameter
+	 */
+	private List<Boolean> isComplementaryGroupSocial;
+	
+	
+	/**
 	 * A list of the cumulative frequencies of attributes in the order in which they are present in complementaryGroups
 	 */
 	private List<List<Double>> complementaryGroupsIntervals;
@@ -65,6 +71,7 @@ public class Dendrogram {
 		noOfCommonData = new int[100][100];
 		complementaryGroupsIntervals = new ArrayList<List<Double>>();
 		complementaryGroups = new ArrayList<List<Integer>>();
+		isComplementaryGroupSocial = new ArrayList<Boolean>();
 		patientProjAdjMat = new int[151][151];
 		projAdjMat = new int[100][100];
 		noOfEntries = 0;
@@ -194,7 +201,7 @@ public class Dendrogram {
 			randoms.add(new Random());
 		for(int i=0;i<noOfEntries;i++){
 			Entry entry = new Entry(i);
-			addAttributesToEntry(entry, randoms);
+			addAttributesToEntry(entry, randoms, i);
 			entries.add(entry);
 		}
 		return entries;
@@ -206,22 +213,42 @@ public class Dendrogram {
 	 * @param entry a patient without any attributes. Attributes are added to this patient
 	 * @param randoms a list of random number generators - each one for a particular complementary group of attributes
 	 */
-	public void addAttributesToEntry(Entry entry, List<Random> randoms){
+	public void addAttributesToEntry(Entry entry, List<Random> randoms, int entryIndex){
 		int index=0;
 		//System.out.println(complementaryGroupsIntervals.get(attr2intMap.get("mother_hiv-NO")));
 
 		for(List<Integer> complGrp : complementaryGroups){
-			double random = randoms.get(index).nextDouble();
-			int i;
-			for(i=0;i<complementaryGroupsIntervals.get(index).size();i++){
-				if(random <= complementaryGroupsIntervals.get(index).get(i)){
-					break;
+			if(isComplementaryGroupSocial.get(index)){
+				// ADD THE SOCIAL ATTRIBUTE AS IN OBSERVED DATA
+				Entry observedEntry = entries.get(entryIndex);
+				for(int attr : complGrp){
+					if(observedEntry.getAttributes().contains(attr)){
+						entry.addAttribute(attr);
+						break;
+					}
+				}
+			}else{
+				double random = randoms.get(index).nextDouble();
+				int i;
+				for(i=0;i<complementaryGroupsIntervals.get(index).size();i++){
+					if(random <= complementaryGroupsIntervals.get(index).get(i)){
+						break;
+					}
+				}
+				if(complGrp.get(i) != -1){
+					entry.addAttribute(complGrp.get(i));
 				}
 			}
-			if(complGrp.get(i) != -1)
-				entry.addAttribute(complGrp.get(i));
 			index++;
 		}
+	}
+	
+	public boolean isSocialAttribute(String attrib){
+		for(String prefix : Metadata.NON_SOCIAL_ATTRIBUTES){
+			if(attrib.startsWith(prefix))
+				return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -240,6 +267,7 @@ public class Dendrogram {
 		for(int i=0;i<NO_OF_COLUMNS;i++){
 			complementaryGroups.add(new ArrayList<Integer>());
 			complementaryGroupsIntervals.add(new ArrayList<Double>());
+			isComplementaryGroupSocial.add(false);
 		}
 		for(int i=0;i<NO_OF_COLUMNS;i++){
 			complementaryGroups.get(i).add(-1);
@@ -253,6 +281,10 @@ public class Dendrogram {
 		        	if(!complementaryGroups.get(j).contains(attr2intMap.get(attrib))){
 		        		complementaryGroups.get(j).add(attr2intMap.get(attrib));
 		        		attr2ComplGrp.put(attr2intMap.get(attrib), j);
+		        		if(isSocialAttribute(attrib)){
+		        			isComplementaryGroupSocial.set(j, true);
+		        		}
+		        		//System.out.println(attrib+"\t"+ isSocialAttribute(attrib));
 		        	}
 	        	}catch(Exception e){
 	        		;
@@ -295,13 +327,6 @@ public class Dendrogram {
 			index++;
 		}
 		
-		/*for(List<Integer> complGrp : complGrps){
-			for(Integer i : complGrp){
-				System.out.print(int2attrMap.get(i)+"\t");
-			}
-			System.out.println();
-		}*/
-		
 	}
 	
 	public void calculate() throws IOException{
@@ -317,7 +342,14 @@ public class Dendrogram {
 		}
 		for(int i=0;i<NO_OF_RANDOM_GRAPHS;i++){
 			Graph graph = generateRandomGraph();
-			
+//			System.out.println("-----"+projAdjMat[attr2intMap.get("mrsa_bacteria-NO")][attr2intMap.get("septran_prophylaxis-YES")]);
+////			System.out.println(">>>>"+graph.getProjAdjMat()[attr2intMap.get("waz_cat- 1")][attr2intMap.get("septran_prophylaxis-YES")]);
+//			System.out.println(">>>>>");
+//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-YES")][attr2intMap.get("septran_prophylaxis-YES")]);
+//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-NO")][attr2intMap.get("septran_prophylaxis-YES")]);
+//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-YES")][attr2intMap.get("septran_prophylaxis-NO")]);
+//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-NO")][attr2intMap.get("septran_prophylaxis-NO")]);
+//			System.out.println("<<<<<");
 			//System.out.println(projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")]*150.0/(projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")] +
 				//	projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("mother_hiv-NO")] +
 					//projAdjMat[attr2intMap.get("tb_child-NO")][attr2intMap.get("waz_cat- 1")]+
@@ -333,8 +365,7 @@ public class Dendrogram {
 					if(graph.getProjAdjMat()[j][k] < this.projAdjMat[j][k]){//*(1.0*noOfEntries)/noOfCommonData[attr2ComplGrp.get(j)][attr2ComplGrp.get(k)]){
 						less[j][k]++;
 					}
-					else{
-						
+					else if(graph.getProjAdjMat()[j][k] > this.projAdjMat[j][k]){
 						greater[j][k]++;
 					}
 				}
@@ -348,21 +379,26 @@ public class Dendrogram {
 			}
 			//System.out.println();
 		}
-		//System.out.println(less[attr2intMap.get("waz_cat- 1")][attr2intMap.get("tb_child-YES")]);
 		/*System.out.println(complementaryGroupsIntervals.get(2));
 		System.out.println(complementaryGroups.get(2));
 		System.out.println(int2attrMap.get(2));
 		System.out.println(int2attrMap.get(50));
 		System.out.println(int2attrMap.get(63));
 		System.out.println(int2attrMap.get(79));*/
-		generateDendrogramInput("dend", less, greater);
-		generateColourCodedNetwork(less, greater);
+		
+		generateDendrogramInput("dend-ve", less, greater);
+		generateColourCodedNetworkNonRedundant(less, greater, 0.92);
 	}
 	
-	public void generateColourCodedNetwork(double less[][], double greater[][]){
+	public void generateColourCodedNetworkPositive(double less[][], double greater[][], double threshold){
 		System.out.println("*Vertices "+noOfAttributes);
 		for(int i=0;i<noOfAttributes;i++){
-			System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");
+			for(int j=0;j<noOfAttributes;j++){
+				if(less[i][j] > threshold){
+					System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");	
+					break;
+				}
+			}
 		}
 		System.out.println("*Edges");
 		String colour = null;
@@ -370,17 +406,167 @@ public class Dendrogram {
 			for(int j=i+1;j<noOfAttributes;j++){
 				if(isEdgeValid(i,j)){
 					double result=less[i][j];
-					/*if(less[i][j] < greater[i][j]){
-						if(less[i][j] > 0)
-							result = 1/less[i][j];
-						colour = "Red";
-					}else{
-						if(greater[i][j] > 0)
-							result = 1/greater[i][j];
-						colour = "Blue";
-					}*/
 					colour = "Blue";
-					System.out.println((i+1)+" "+(j+1)+" "+ result + " c " + colour);
+					if(less[i][j] < 0.5){
+						result = greater[i][j];
+						colour = "Red";
+					}
+					
+					if(result > threshold)
+						System.out.println((i+1)+" "+(j+1)+" "+ result + " c " + colour);
+				}
+			}
+		}
+	}
+	
+	public void generateColourCodedNetwork(double less[][], double greater[][], double threshold){
+		System.out.println("*Vertices "+noOfAttributes);
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(less[i][j] > threshold || greater[i][j] > threshold){
+					System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");	
+					break;
+				}
+			}
+		}
+		System.out.println("*Edges");
+		String colour = null;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=i+1;j<noOfAttributes;j++){
+				if(isEdgeValid(i,j)){
+					double result=less[i][j];
+					colour = "Blue";
+					if(less[i][j] < 0.5){
+						result = greater[i][j];
+						colour = "Red";
+					}
+					
+					if(result > threshold)
+						System.out.println((i+1)+" "+(j+1)+" "+ result + " c " + colour);
+				}
+			}
+		}
+	}
+	
+	public void generateColourCodedNetworkNonRedundantNegative(double less[][], double greater[][], double threshold){
+		int count = 0;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(greater[i][j] > threshold){
+					count++;
+					break;
+				}
+			}
+		}
+		System.out.println("*Vertices "+count);
+		count=1;
+		Map<Integer, Integer> vertexIdToPajekIdMap = new HashMap<Integer, Integer>();
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(greater[i][j] > threshold){
+					vertexIdToPajekIdMap.put(i, count);
+					
+					//System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");
+					System.out.println((count)+" \""+int2attrMap.get(i)+"\"");
+					count++;
+					break;
+				}
+			}
+		}
+		System.out.println("*Edges");
+		String colour = null;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=i+1;j<noOfAttributes;j++){
+				if(isEdgeValid(i,j)){
+					double result=greater[i][j];
+					colour = "Red";
+					
+					if(result > threshold)
+						System.out.println(vertexIdToPajekIdMap.get(i)+" "+vertexIdToPajekIdMap.get(j)+" "+ result + " c " + colour);
+				}
+			}
+		}
+	}
+	
+	public void generateColourCodedNetworkNonRedundantPositive(double less[][], double greater[][], double threshold){
+		int count = 0;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(less[i][j] > threshold){
+					count++;
+					break;
+				}
+			}
+		}
+		System.out.println("*Vertices "+count);
+		count=1;
+		Map<Integer, Integer> vertexIdToPajekIdMap = new HashMap<Integer, Integer>();
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(less[i][j] > threshold){
+					vertexIdToPajekIdMap.put(i, count);
+					
+					//System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");
+					System.out.println((count)+" \""+int2attrMap.get(i)+"\"");
+					count++;
+					break;
+				}
+			}
+		}
+		System.out.println("*Edges");
+		String colour = null;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=i+1;j<noOfAttributes;j++){
+				if(isEdgeValid(i,j)){
+					double result=less[i][j];
+					colour = "Blue";
+					
+					if(result > threshold)
+						System.out.println(vertexIdToPajekIdMap.get(i)+" "+vertexIdToPajekIdMap.get(j)+" "+ result + " c " + colour);
+				}
+			}
+		}
+	}
+	
+	public void generateColourCodedNetworkNonRedundant(double less[][], double greater[][], double threshold){
+		int count = 0;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(less[i][j] > threshold || greater[i][j] > threshold){
+					count++;
+					break;
+				}
+			}
+		}
+		System.out.println("*Vertices "+count);
+		count=1;
+		Map<Integer, Integer> vertexIdToPajekIdMap = new HashMap<Integer, Integer>();
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=0;j<noOfAttributes;j++){
+				if(less[i][j] > threshold || greater[i][j] > threshold){
+					vertexIdToPajekIdMap.put(i, count);
+					
+					//System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");
+					System.out.println((count)+" \""+int2attrMap.get(i)+"\"");
+					count++;
+					break;
+				}
+			}
+		}
+		System.out.println("*Edges");
+		String colour = null;
+		for(int i=0;i<noOfAttributes;i++){
+			for(int j=i+1;j<noOfAttributes;j++){
+				if(isEdgeValid(i,j)){
+					double result=less[i][j];
+					colour = "Blue";
+					if(less[i][j] < 0.5){
+						result = greater[i][j];
+						colour = "Red";
+					}
+					
+					if(result > threshold)
+						System.out.println(vertexIdToPajekIdMap.get(i)+" "+vertexIdToPajekIdMap.get(j)+" "+ result + " c " + colour);
 				}
 			}
 		}
@@ -410,7 +596,7 @@ public class Dendrogram {
 		{
 			for(int j=0;j<noOfAttributes;j++)
 			{
-				bw.write(less[i][j]+"\t");
+				bw.write(greater[i][j]+"\t");
 			}
 			bw.write("\n");
 		}
