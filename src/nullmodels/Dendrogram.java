@@ -243,6 +243,11 @@ public class Dendrogram {
 		}
 	}
 	
+	/**
+	 * 	Returns whether the attribute attrib is a social attribute or not
+	 * @param attrib
+	 * @return
+	 */
 	public boolean isSocialAttribute(String attrib){
 		for(String prefix : Metadata.NON_SOCIAL_ATTRIBUTES){
 			if(attrib.startsWith(prefix))
@@ -329,9 +334,11 @@ public class Dendrogram {
 		
 	}
 	
+	/**
+	 * Performs the major calculation step related to null models.
+	 * @throws IOException
+	 */
 	public void calculate() throws IOException{
-		//System.out.println("xxx"+noOfCommonData[attr2ComplGrp.get(attr2intMap.get("father_tb_death-YES"))][attr2ComplGrp.get(attr2intMap.get("tb_child-NO"))]);
-
 		double less[][] = new double[noOfAttributes][noOfAttributes];
 		double greater[][] = new double[noOfAttributes][noOfAttributes];
 		for(int i=0;i<noOfAttributes;i++){
@@ -342,22 +349,7 @@ public class Dendrogram {
 		}
 		for(int i=0;i<NO_OF_RANDOM_GRAPHS;i++){
 			Graph graph = generateRandomGraph();
-//			System.out.println("-----"+projAdjMat[attr2intMap.get("mrsa_bacteria-NO")][attr2intMap.get("septran_prophylaxis-YES")]);
-////			System.out.println(">>>>"+graph.getProjAdjMat()[attr2intMap.get("waz_cat- 1")][attr2intMap.get("septran_prophylaxis-YES")]);
-//			System.out.println(">>>>>");
-//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-YES")][attr2intMap.get("septran_prophylaxis-YES")]);
-//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-NO")][attr2intMap.get("septran_prophylaxis-YES")]);
-//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-YES")][attr2intMap.get("septran_prophylaxis-NO")]);
-//			System.out.println(graph.getProjAdjMat()[attr2intMap.get("mrsa_bacteria-NO")][attr2intMap.get("septran_prophylaxis-NO")]);
-//			System.out.println("<<<<<");
-			//System.out.println(projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")]*150.0/(projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")] +
-				//	projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("mother_hiv-NO")] +
-					//projAdjMat[attr2intMap.get("tb_child-NO")][attr2intMap.get("waz_cat- 1")]+
-					//projAdjMat[attr2intMap.get("tb_child-NO")][attr2intMap.get("mother_hiv-NO")])
-					//+"\t"+ graph.getProjAdjMat()[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")]);
-			//if(graph.projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")] > this.projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")]*(1.0*noOfEntries)/noOfCommonData[attr2ComplGrp.get(attr2intMap.get("tb_child-YES"))][attr2ComplGrp.get(attr2intMap.get("waz_cat- 1"))])
-				//System.out.println(graph.projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")] +"\t"+ this.projAdjMat[attr2intMap.get("tb_child-YES")][attr2intMap.get("waz_cat- 1")]*(1.0*noOfEntries)/noOfCommonData[attr2ComplGrp.get(attr2intMap.get("tb_child-YES"))][attr2ComplGrp.get(attr2intMap.get("waz_cat- 1"))]);
-			
+
 			for(int j=0;j<noOfAttributes;j++){
 				for(int k=0;k<noOfAttributes;k++){
 					
@@ -390,36 +382,15 @@ public class Dendrogram {
 		generateColourCodedNetworkNonRedundant(less, greater, 0.92);
 	}
 	
-	public void generateColourCodedNetworkPositive(double less[][], double greater[][], double threshold){
-		System.out.println("*Vertices "+noOfAttributes);
-		for(int i=0;i<noOfAttributes;i++){
-			for(int j=0;j<noOfAttributes;j++){
-				if(less[i][j] > threshold){
-					System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");	
-					break;
-				}
-			}
-		}
-		System.out.println("*Edges");
-		String colour = null;
-		for(int i=0;i<noOfAttributes;i++){
-			for(int j=i+1;j<noOfAttributes;j++){
-				if(isEdgeValid(i,j)){
-					double result=less[i][j];
-					colour = "Blue";
-					if(less[i][j] < 0.5){
-						result = greater[i][j];
-						colour = "Red";
-					}
-					
-					if(result > threshold)
-						System.out.println((i+1)+" "+(j+1)+" "+ result + " c " + colour);
-				}
-			}
-		}
-	}
-	
-	public void generateColourCodedNetwork(double less[][], double greater[][], double threshold){
+	/**
+	 * Generates a network as a .net file depicting both the positive and negative correlations.
+	 * This function does not omit the vertices which don't have an edge under the given threshold.
+	 * Because of this, the output .net file works in mapequation.org but not in Pajek.
+	 * @param less
+	 * @param greater
+	 * @param threshold
+	 */
+	public void generateCorrelationNetwork(double less[][], double greater[][], double threshold){
 		System.out.println("*Vertices "+noOfAttributes);
 		for(int i=0;i<noOfAttributes;i++){
 			for(int j=0;j<noOfAttributes;j++){
@@ -447,8 +418,13 @@ public class Dendrogram {
 			}
 		}
 	}
-	
-	public void generateColourCodedNetworkNonRedundantNegative(double less[][], double greater[][], double threshold){
+	/**
+	 * 
+	 * @param less
+	 * @param greater
+	 * @param threshold
+	 */
+	public void generateNegativeCorrelationNetwork(double less[][], double greater[][], double threshold){
 		int count = 0;
 		for(int i=0;i<noOfAttributes;i++){
 			for(int j=0;j<noOfAttributes;j++){
@@ -488,7 +464,7 @@ public class Dendrogram {
 		}
 	}
 	
-	public void generateColourCodedNetworkNonRedundantPositive(double less[][], double greater[][], double threshold){
+	public void generatePositiveCorrelationNetwork(double less[][], double greater[][], double threshold){
 		int count = 0;
 		for(int i=0;i<noOfAttributes;i++){
 			for(int j=0;j<noOfAttributes;j++){
@@ -545,8 +521,6 @@ public class Dendrogram {
 			for(int j=0;j<noOfAttributes;j++){
 				if(less[i][j] > threshold || greater[i][j] > threshold){
 					vertexIdToPajekIdMap.put(i, count);
-					
-					//System.out.println((i+1)+" \""+int2attrMap.get(i)+"\"");
 					System.out.println((count)+" \""+int2attrMap.get(i)+"\"");
 					count++;
 					break;
@@ -605,7 +579,6 @@ public class Dendrogram {
 	}
 	
 	private boolean isEdgeValid(int i, int j) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	public static void main(String args[]) throws IOException{
