@@ -1,0 +1,175 @@
+*Vertices 139
+2 "m_pos-1"
+3 "f_fvn-0"
+9 "kswat-1"
+10 "kswall-1"
+12 "opv3-n"
+13 "dpt3-y"
+14 "dpt4-n"
+15 "opv4-n"
+18 "hepb1-y"
+20 "ag>"
+21 "lat>"
+23 "thall0"
+30 "sea-mon"
+32 "rel-m"
+34 "h-n"
+35 "w-s"
+36 "im-n"
+37 "so-uplo"
+43 "sic-1"
+44 "abx-1"
+46 "tbhs-0"
+48 "hosp-1"
+51 "artc-0"
+54 "m_art-1"
+55 "m_tb-0"
+56 "m_pneum-0"
+59 "f_fvn-1"
+60 "f_pneum-0"
+61 "f_tb-1"
+62 "f_art-1"
+63 "f_pos-1"
+64 "f_sch<"
+65 "ag_f<"
+68 "opv3-y"
+69 "ag<"
+71 "load>"
+72 "h-s"
+73 "im-s"
+74 "wbath-p"
+75 "sic-0"
+76 "tbhs-1"
+80 "f_tb-0"
+84 "w-n"
+85 "im-m"
+87 "abx-0"
+89 "m_sch>"
+92 "ag_f>"
+93 "nongov-1"
+94 "hi1"
+95 "sn1"
+96 "w-m"
+97 "so-lo"
+100 "lat<"
+104 "load0"
+105 "artc-1"
+106 "sea-pre"
+108 "rel-f"
+109 "sch0"
+111 "wdrin-ta"
+112 "f_sch>"
+114 "m_pos-0"
+115 "f_pos-0"
+116 "ksfdg-1"
+117 "dpt4-y"
+118 "opv4-y"
+121 "thall1"
+122 "so-upmi"
+124 "wbath-w"
+130 "m_sch0"
+131 "ear-1"
+132 "m_tb-1"
+133 "m_lvn-0"
+134 "dpt3-n"
+*Edges
+2 121 0.997 c Red
+2 133 0.9966 c Red
+3 60 1.0 c Red
+3 61 1.0 c Red
+3 62 1.0 c Red
+3 63 1.0 c Red
+3 64 1.0 c Red
+3 65 1.0 c Red
+3 80 1.0 c Red
+3 92 0.9994 c Red
+3 112 1.0 c Red
+3 114 0.9912 c Red
+3 115 0.997 c Red
+3 121 0.9934 c Red
+9 10 0.994 c Blue
+10 130 0.997 c Red
+12 13 1.0 c Red
+12 134 1.0 c Blue
+13 68 0.9988 c Blue
+14 118 1.0 c Red
+15 117 0.9946 c Red
+18 93 0.9912 c Blue
+20 106 0.9978 c Blue
+20 109 0.9952 c Red
+21 36 1.0 c Blue
+21 73 0.995 c Red
+21 85 0.999 c Red
+23 114 0.9994 c Red
+23 115 0.9972 c Red
+30 104 0.993 c Red
+30 131 0.9926 c Red
+32 133 0.9988 c Red
+34 35 1.0 c Red
+34 84 0.9998 c Blue
+35 72 1.0 c Blue
+36 100 1.0 c Red
+37 130 0.9974 c Red
+43 44 1.0 c Red
+43 87 0.9998 c Blue
+44 75 0.9984 c Blue
+46 61 1.0 c Red
+46 80 0.9904 c Blue
+48 124 0.9996 c Blue
+51 71 0.9992 c Blue
+51 104 1.0 c Red
+54 114 0.9996 c Red
+54 133 0.9964 c Red
+55 133 0.999 c Red
+56 133 0.9978 c Red
+59 60 1.0 c Blue
+59 62 0.9998 c Blue
+59 63 0.9994 c Blue
+59 64 0.995 c Blue
+59 65 0.9992 c Blue
+59 80 0.9954 c Blue
+59 92 0.9936 c Blue
+59 112 0.9968 c Blue
+60 62 0.9998 c Blue
+60 63 0.9998 c Blue
+60 65 0.996 c Blue
+60 80 0.9986 c Blue
+60 92 0.9968 c Blue
+60 112 0.9978 c Blue
+61 62 0.9996 c Blue
+61 63 0.9996 c Blue
+61 76 1.0 c Blue
+62 63 1.0 c Blue
+62 64 0.995 c Blue
+62 115 0.9988 c Red
+63 64 0.995 c Blue
+63 92 0.9942 c Blue
+68 134 1.0 c Red
+69 106 1.0 c Red
+69 134 0.9958 c Red
+71 105 1.0 c Red
+72 84 0.9958 c Red
+72 96 0.9938 c Red
+73 100 0.9912 c Blue
+74 97 0.9988 c Blue
+75 87 0.9994 c Red
+76 80 0.9996 c Red
+76 115 0.997 c Red
+76 132 0.9936 c Blue
+80 114 0.9904 c Blue
+80 115 0.999 c Blue
+80 121 0.9952 c Blue
+85 100 0.9996 c Blue
+89 97 0.9976 c Red
+89 112 0.9956 c Blue
+94 95 0.9908 c Blue
+97 130 1.0 c Blue
+104 105 1.0 c Blue
+108 133 1.0 c Blue
+111 116 0.9904 c Blue
+112 130 0.999 c Red
+114 115 1.0 c Blue
+114 121 1.0 c Blue
+115 121 1.0 c Blue
+116 122 0.9916 c Blue
+117 118 1.0 c Blue

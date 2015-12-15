@@ -1,70 +1,100 @@
-*Vertices 26
-1 "antibiotic_pastmonth-NO"
-2 "age (2,5]"
-3 "hinfluenzae-NO"
-4 "hinfluenzae_type_b-NO"
-5 "saureus_bacteria-NO"
-6 "spneumo_bacteria-NO"
-7 "sviridans_bacteria-NO"
-8 "antibiotic_pastmonth-YES"
-9 "cd4_class-NORMAL"
-10 "spneumo_bacteria-YES"
-11 "tb_child-YES"
-12 "waz_cat- 1"
-13 "saureus_bacteria-YES"
-14 "sviridans_bacteria-YES"
-15 "waz_cat- 3"
-16 "full_immunisation_completed-NO"
-17 "birthplace- 15"
-18 "movement_within_age2-NO"
-19 "tb_Medicines-YES"
-20 "septran_prophylaxis-NO"
-21 "mrsa_bacteria-YES"
-22 "birthplace- "
-23 "hinfluenzae-YES"
-24 "hinfluenzae_type_b-YES"
-25 "father_hiv-NO"
-26 "mother_hiv-NO"
-*Edges
-1 7 0.9732 c Red
-1 14 0.9732 c Blue
-2 7 0.9536 c Blue
-2 14 0.9536 c Red
-3 4 0.9916 c Blue
-3 11 0.9654 c Blue
-3 15 0.9342 c Blue
-3 18 0.9742 c Red
-3 19 0.9874 c Blue
-3 20 0.9492 c Blue
-3 24 1.0 c Red
-4 8 0.953 c Blue
-4 9 0.9342 c Blue
-4 23 0.9956 c Red
-5 12 0.9452 c Blue
-5 21 0.993 c Red
-6 16 0.9238 c Blue
-6 19 0.9326 c Blue
-6 22 0.9216 c Red
-6 26 0.962 c Blue
-7 17 0.95 c Red
-7 18 0.968 c Blue
-7 25 0.947 c Red
-8 24 0.953 c Red
-9 24 0.9342 c Red
-10 14 0.969 c Red
-10 16 0.9238 c Red
-10 19 0.9326 c Red
-10 22 0.9216 c Blue
-10 23 0.9526 c Blue
-10 26 0.962 c Red
-11 23 0.9654 c Red
-12 13 0.9452 c Red
-13 21 0.9986 c Blue
-14 17 0.95 c Blue
-14 18 0.968 c Red
-14 25 0.947 c Blue
-15 23 0.9342 c Red
-18 23 0.9742 c Blue
-19 23 0.9874 c Red
-20 23 0.9492 c Red
-23 24 1.0 c Blue
+first	second	grade	spec
+antibiotic_pastmonth-NO	sviridans_bacteria-NO	0.9712	red
+antibiotic_pastmonth-NO	sviridans_bacteria-YES	0.9712	blue
+age (2,5]	sviridans_bacteria-NO	0.948	blue
+age (2,5]	sviridans_bacteria-YES	0.948	red
+cd4_class-MODERATE	hinfluenzae_type_b-NO	0.9088	red
+cd4_class-MODERATE	hinfluenzae_type_b-YES	0.9088	blue
+hinfluenzae-NO	hinfluenzae_type_b-NO	0.9916	blue
+hinfluenzae-NO	tb_child-YES	0.967	blue
+hinfluenzae-NO	waz_cat- 3	0.9314	blue
+hinfluenzae-NO	birthplace- 8	0.9244	blue
+hinfluenzae-NO	movement_within_age2-NO	0.975	red
+hinfluenzae-NO	tb_Medicines-YES	0.9882	blue
+hinfluenzae-NO	septran_prophylaxis-NO	0.9584	blue
+hinfluenzae-NO	hinfluenzae_type_b-YES	1.0	red
+hinfluenzae_type_b-NO	antibiotic_pastmonth-YES	0.9616	blue
+hinfluenzae_type_b-NO	cd4_class-NORMAL	0.938	blue
+hinfluenzae_type_b-NO	hinfluenzae-YES	0.9974	red
+hinfluenzae_type_b-NO	num_children_house >5	0.9052	red
+mrsa_bacteria-NO	runny_nose-YES	0.9172	red
+runny_nose-YES	mrsa_bacteria-YES	0.9172	blue
+saureus_bacteria-NO	waz_cat- 1	0.9376	blue
+saureus_bacteria-NO	birthplace- 13	0.9038	blue
+saureus_bacteria-NO	mrsa_bacteria-YES	0.994	red
+spneumo_bacteria-NO	cd4_class-NORMAL	0.904	red
+spneumo_bacteria-NO	waz_cat- 3	0.9152	blue
+spneumo_bacteria-NO	full_immunisation_completed-NO	0.9256	blue
+spneumo_bacteria-NO	tb_Medicines-YES	0.924	blue
+spneumo_bacteria-NO	birthplace- 	0.9342	red
+spneumo_bacteria-NO	mother_hiv-NO	0.9656	blue
+sviridans_bacteria-NO	birthplace- 15	0.9498	red
+sviridans_bacteria-NO	movement_within_age2-NO	0.968	blue
+sviridans_bacteria-NO	father_hiv-NO	0.9462	red
+antibiotic_pastmonth-YES	hinfluenzae_type_b-YES	0.9616	red
+cd4_class-NORMAL	spneumo_bacteria-YES	0.904	blue
+cd4_class-NORMAL	hinfluenzae_type_b-YES	0.938	red
+spneumo_bacteria-YES	sviridans_bacteria-YES	0.972	red
+spneumo_bacteria-YES	waz_cat- 3	0.9152	red
+spneumo_bacteria-YES	full_immunisation_completed-NO	0.9256	red
+spneumo_bacteria-YES	tb_Medicines-YES	0.924	red
+spneumo_bacteria-YES	birthplace- 	0.9342	blue
+spneumo_bacteria-YES	hinfluenzae-YES	0.9474	blue
+spneumo_bacteria-YES	mother_hiv-NO	0.9656	red
+tb_child-YES	hinfluenzae-YES	0.967	red
+waz_cat- 1	saureus_bacteria-YES	0.9376	red
+birthplace- 13	saureus_bacteria-YES	0.9038	red
+saureus_bacteria-YES	mrsa_bacteria-YES	0.999	blue
+sviridans_bacteria-YES	birthplace- 15	0.9498	blue
+sviridans_bacteria-YES	movement_within_age2-NO	0.968	red
+sviridans_bacteria-YES	hinfluenzae_type_b-YES	0.9064	blue
+sviridans_bacteria-YES	father_hiv-NO	0.9462	blue
+waz_cat- 3	hinfluenzae-YES	0.9314	red
+birthplace- 8	hinfluenzae-YES	0.9244	red
+movement_within_age2-NO	hinfluenzae-YES	0.975	blue
+tb_Medicines-YES	hinfluenzae-YES	0.9882	red
+septran_prophylaxis-NO	hinfluenzae-YES	0.9584	red
+hinfluenzae-YES	hinfluenzae_type_b-YES	1.0	blue
+hinfluenzae_type_b-YES	num_children_house >5	0.9052	blue
+----------------Component---------------------
+antibiotic_pastmonth-NO
+sviridans_bacteria-YES
+birthplace- 15
+hinfluenzae_type_b-YES
+cd4_class-MODERATE
+hinfluenzae-YES
+spneumo_bacteria-YES
+cd4_class-NORMAL
+hinfluenzae_type_b-NO
+hinfluenzae-NO
+tb_child-YES
+waz_cat- 3
+spneumo_bacteria-NO
+full_immunisation_completed-NO
+tb_Medicines-YES
+mother_hiv-NO
+birthplace- 8
+septran_prophylaxis-NO
+antibiotic_pastmonth-YES
+birthplace- 
+movement_within_age2-NO
+sviridans_bacteria-NO
+age (2,5]
+num_children_house >5
+father_hiv-NO
+----------------Component---------------------
+----------------Component---------------------
+runny_nose-YES
+mrsa_bacteria-YES
+saureus_bacteria-YES
+----------------Component---------------------
+----------------Component---------------------
+saureus_bacteria-NO
+waz_cat- 1
+birthplace- 13
+----------------Component---------------------
+[-1, 0, 31]
+[0.4768211920529801, 0.6754966887417219, 1.0]
+null
+antibiotic_pastmonth-NO
+antibiotic_pastmonth-YES
