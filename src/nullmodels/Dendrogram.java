@@ -371,7 +371,7 @@ public class Dendrogram {
 		
 		generateDendrogramInput("dend-ve", less, greater);
 		generateCorrelationNetworkR(less, greater, 0.9);
-		ConnectedComponentsFinder connectedComponentsFinder = new ConnectedComponentsFinder(less, noOfAttributes, 0.9);
+		/*ConnectedComponentsFinder connectedComponentsFinder = new ConnectedComponentsFinder(less, noOfAttributes, 0.9);
 		List<List<Integer>> connectedComps = connectedComponentsFinder.findConnectedComponents();
 		for(List<Integer> component : connectedComps){
 			System.out.println("----------------Component---------------------");
@@ -379,7 +379,7 @@ public class Dendrogram {
 				System.out.println(int2attrMap.get(vertex));
 			}
 			System.out.println("----------------Component---------------------");
-		}
+		}*/
 	}
 	
 	/**
